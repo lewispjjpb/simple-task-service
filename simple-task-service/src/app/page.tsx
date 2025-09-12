@@ -1,11 +1,12 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import { Box } from "@mui/material"
+import RootLayout from "@/app/layout";
+import { TaskTracker} from "@/app/components/TaskTracker";
 
 export default function Home() {
   return (
-    <Box>
-      content
-    </Box>
+    <RootLayout>
+      <TaskTracker />
+    </RootLayout>
   );
 }
