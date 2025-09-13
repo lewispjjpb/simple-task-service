@@ -7,7 +7,7 @@ import {
   MenuItem,
   InputLabel,
   Stack,
-  Button
+  Button, SelectChangeEvent
 } from '@mui/material';
 import { TasksContext } from "@/app/context/TasksContext";
 import { BasicModal } from "@/app/components/shared/BasicModal";
@@ -37,7 +37,7 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
     editTaskProperty(name, value);
   };
 
-  const handleSelectChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+  const handleSelectChange = (event: SelectChangeEvent) => {
     const name = event.target.name as string;
     const value = event.target.value as string;
     editTaskProperty(name, value);
@@ -52,6 +52,7 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
           label="Task Name"
           value={editingTask.name}
           onChange={handleInputChange}
+          required
         />
 
         <TextField
@@ -70,6 +71,7 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
           label="Bucket"
           value={editingTask.bucket}
           onChange={handleInputChange}
+          required
         />
 
         <FormControl fullWidth>

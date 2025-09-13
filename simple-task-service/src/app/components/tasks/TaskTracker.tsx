@@ -62,6 +62,7 @@ export const TaskTracker = ():JSX.Element => {
       </Grid>
     {Object.entries(listGroups).map(([bucket, tasks]) =>
       <Grid
+        key={bucket}
         size={{xs: 12, sm: 12, md: 6, lg: 6}}
         direction="row"
         sx={{
@@ -69,7 +70,7 @@ export const TaskTracker = ():JSX.Element => {
           alignItems: "center",
         }}
       >
-        <TaskList key={bucket} id={bucket} taskList={tasks}/>
+        <TaskList  id={bucket} taskList={tasks}/>
       </Grid>
     )}
     </Grid>

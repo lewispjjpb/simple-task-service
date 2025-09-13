@@ -3,6 +3,7 @@ import {createContext, JSX, useEffect, useState} from 'react';
 import { ITaskContext} from "@/types/taskContextDefinition";
 import {ITaskList, ITask} from "@/types/tasks";
 import {tempTasks} from "../../../mockdata/temptasks";
+import {loadFromLocalStorage, saveToLocalStorage} from "@/app/lib/localStorageHandlers";
 
 export const TasksContext = createContext<ITaskContext>({} as ITaskContext);
 
@@ -24,8 +25,8 @@ export const TasksContextProvider = ({children}: {children:JSX.Element}) => {
 
   const loadTasksFromStorage = async ():Promise<void> => {
     //temp tasks
-    const taskList:ITaskList = await tempTasks;
-    setTasks(taskList);
+    const taskList:ITaskList = await loadFromLocalStorage('tasks');
+    setTasks(taskList || []);
   }
 
   const editTaskProperty = (key: string, value: string | number):void => {
@@ -40,11 +41,32 @@ export const TasksContextProvider = ({children}: {children:JSX.Element}) => {
   }
 
   const saveTask = (taskId: ITask['id']) => {
-    const task = tasks.find(task => task.id === taskId);
+    const task = tasks?.find(task => task.id === taskId);
     if (task) {
       //replace existing task with updated task
-      setTasks(tasks.map(task => task.id === taskId ? editingTask : task));
+      const updatedTasks = tasks.map(task => task.id === taskId ? editingTask : task)
+      setTasks(updatedTasks);
+      saveToLocalStorage('tasks', updatedTasks)
       setEditingTask(initialEditingTask);
+    } else {
+      // add new task
+      if (!editingTask.bucket) {
+        editingTask.bucket = 'uncategorized';
+      }
+      const updatedTasks = [...tasks, editingTask];
+      setTasks(updatedTasks);
+      saveToLocalStorage('tasks', updatedTasks);
+      setEditingTask(initialEditingTask);
+    }
+  }
+
+  const deleteTask = (taskId: ITask['id']) => {
+    //check id exists in tasks
+    if (tasks.find(task => task.id === taskId)) {
+      //remove task from tasks
+      const updatedTasks = tasks.filter(task => task.id !== taskId);
+      setTasks(updatedTasks);
+      saveToLocalStorage('tasks', updatedTasks);
     }
   }
 
@@ -54,6 +76,7 @@ export const TasksContextProvider = ({children}: {children:JSX.Element}) => {
     setTaskToEdit,
     editingTask,
     saveTask,
+    deleteTask,
   }
   return <TasksContext.Provider value={contextValues}>
     {children}

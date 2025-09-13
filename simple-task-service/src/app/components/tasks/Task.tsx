@@ -1,10 +1,11 @@
 import {JSX, useContext, useState} from 'react';
-import {Card, CardContent, Chip, CardActionArea, Typography, Button, Box} from "@mui/material";
+import {Card, CardContent, Chip, Typography, Button, Tooltip, IconButton} from "@mui/material";
 import {EditTaskModal} from "@/app/components/tasks/EditTaskModal";
 import { ITask } from "@/types/tasks";
 import {TasksContext} from "@/app/context/TasksContext";
 import {Grid} from "@mui/system";
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export const  Task = (task: ITask):JSX.Element => {
   const {setTaskToEdit} = useContext(TasksContext);
@@ -15,6 +16,7 @@ export const  Task = (task: ITask):JSX.Element => {
     setEditModalOpen(true);
   }
 
+  const buttonSize = 1;
   return (
       <Card
         sx={{
@@ -45,17 +47,29 @@ export const  Task = (task: ITask):JSX.Element => {
                   }}
                 />
               </Grid>
-              <Grid size={2}>
-                <Button
+              <Grid size={buttonSize}>
+                <Tooltip title={'edit task'}>
+                <IconButton
                   aria-label="Edit task"
-                  variant="contained"
                   color="primary"
                   size="small"
                   onClick={openAndPopulateEditModal}
-                  startIcon={<EditIcon />}
                 >
-                  Edit
-                </Button>
+                  <EditIcon />
+                </IconButton >
+                </Tooltip>
+              </Grid>
+              <Grid size={buttonSize}>
+                <Tooltip title={'delete task'}>
+                  <IconButton
+                    aria-label="delete task"
+                    color="primary"
+                    size="small"
+                    onClick={openAndPopulateEditModal}
+                  >
+                    <DeleteForeverIcon />
+                  </IconButton>
+                </Tooltip>
               </Grid>
               <Grid size={12}>
                 <Typography variant="body2" color="text.secondary">

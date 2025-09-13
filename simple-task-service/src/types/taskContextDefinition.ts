@@ -6,4 +6,5 @@ export interface ITaskContext {
   editTaskProperty: (key: string, value: string) => void,
   editingTask: ITask,
   saveTask: (taskId: ITask['id']) => void,
+  deleteTask: (taskId: ITask['id']) => void,
 }
