@@ -1,8 +1,6 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Prerequisites
-- Node.js installed
-- npm installed
 - Docker installed 
 - Docker Compose installed
 - An .env file in the app root directory to match the .env.template file
@@ -17,9 +15,12 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Running with Docker Compose
 
-The easiest way to run the application is using Docker Compose:
+1) If necessary, cd into the project directory simple-task-service
+2) In the terminal, run the following command: docker-compose up --build
+3) The application will be available at http://localhost:3000/tasks
 
-bash
+
+## bash commands:
 ### Build and start the application
 docker-compose up --build
 ### To run in detached mode
