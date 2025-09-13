@@ -10,6 +10,6 @@ export interface ITask {
   _id?: string; //only relevant to mongo
 }
 
-export type ITaskList = ITask[]
+export type ITaskList = ITask[];
 
-export type CompletionStatus = "incomplete" | "complete";
+export type CompletionStatus = 'incomplete' | 'complete';

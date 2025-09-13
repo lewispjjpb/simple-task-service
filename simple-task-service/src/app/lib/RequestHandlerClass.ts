@@ -1,23 +1,22 @@
-
-import {ITask, ITaskList} from "@/types/tasks";
+import { ITask, ITaskList } from '@/types/tasks';
 
 export class RequestHandler {
   private headers;
   private route;
-  constructor(route:string) {
+  constructor(route: string) {
     this.headers = {
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Encoding': 'gzip',
     };
     this.route = `/tasks/api/tasks/${route}`;
   }
 
-  async getTasks<T,>():Promise<T> {
+  async getTasks<T>(): Promise<T> {
     try {
       const response = await fetch(this.route, {
         method: 'GET',
-        headers: {...this.headers},
+        headers: { ...this.headers },
       });
       const tasks = await response.json();
       return tasks;
@@ -27,12 +26,12 @@ export class RequestHandler {
     }
   }
 
-  async saveTasks(task:ITask):Promise<Response> {
+  async saveTasks(task: ITask): Promise<Response> {
     try {
       const response = await fetch(this.route, {
         method: 'POST',
-        headers: {...this.headers},
-        body: JSON.stringify(task)
+        headers: { ...this.headers },
+        body: JSON.stringify(task),
       });
       const savedTasks = await response.json();
       return savedTasks;
@@ -42,12 +41,12 @@ export class RequestHandler {
     }
   }
 
-  async deleteTask(taskId:string):Promise<Response> {
+  async deleteTask(taskId: string): Promise<Response> {
     try {
       const response = await fetch(`${this.route}`, {
         method: 'DELETE',
-        headers: {...this.headers},
-        body: JSON.stringify(taskId)
+        headers: { ...this.headers },
+        body: JSON.stringify(taskId),
       });
       const deletedTask = await response.json();
       return deletedTask;
@@ -56,5 +55,4 @@ export class RequestHandler {
       throw e;
     }
   }
-
 }

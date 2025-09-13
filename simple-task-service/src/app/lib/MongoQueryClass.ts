@@ -1,11 +1,13 @@
-import {Collection, MongoClient} from 'mongodb';
-import {ITask} from "@/types/tasks";
+import { Collection, MongoClient } from 'mongodb';
+import { ITask } from '@/types/tasks';
 
-    console.debug(process.env.MONGO_URI)
-const mongoClient = new MongoClient(process.env.MONGO_URI || 'mongo string not found');
+console.debug(process.env.MONGO_URI);
+const mongoClient = new MongoClient(
+  process.env.MONGO_URI || 'mongo string not found'
+);
 
 export class MongoQueryClass {
-  private client:MongoClient;
+  private client: MongoClient;
   constructor() {
     this.client = mongoClient;
     this.connectToClient();
@@ -16,7 +18,7 @@ export class MongoQueryClass {
       await this.client.connect();
     } catch (e) {
       console.error(e);
-      throw new Error('could not connect to mongo client')
+      throw new Error('could not connect to mongo client');
     }
   }
 
@@ -25,22 +27,22 @@ export class MongoQueryClass {
       await this.client.close();
     } catch (e) {
       console.error(e);
-      throw new Error('could not close mongo client')
+      throw new Error('could not close mongo client');
     }
   }
 
-  async getCollection(collectionName:string):Promise<Collection> {
+  async getCollection(collectionName: string): Promise<Collection> {
     return this.client.db('tasks').collection(collectionName);
   }
 
-  async getTasks<T>(userId:string):Promise<T> {
+  async getTasks<T>(userId: string): Promise<T> {
     try {
-    const query = {
-      'userId': userId
-    }
-    const collection = await this.getCollection('tasks');
-    const tasks = await collection.find(query).toArray();
-    return tasks as T;
+      const query = {
+        userId: userId,
+      };
+      const collection = await this.getCollection('tasks');
+      const tasks = await collection.find(query).toArray();
+      return tasks as T;
     } catch (e) {
       console.error(e);
       throw new Error('could not get tasks');
@@ -49,19 +51,19 @@ export class MongoQueryClass {
     }
   }
 
-  async saveTasks(task:ITask, userId:string):Promise<any> {
+  async saveTasks(task: ITask, userId: string): Promise<any> {
     try {
       const collection = await this.getCollection('tasks');
       const query = {
         id: task.id,
-        userId: userId
-      }
+        userId: userId,
+      };
 
       const { _id, ...taskWithoutId } = task;
       const update = {
-        $set: {...taskWithoutId}
-      }
-      const options = {upsert: true};
+        $set: { ...taskWithoutId },
+      };
+      const options = { upsert: true };
       const result = await collection.updateOne(query, update, options);
       return result;
     } catch (e) {
@@ -72,12 +74,12 @@ export class MongoQueryClass {
     }
   }
 
-  async deleteTask(taskId:string):Promise<any> {
+  async deleteTask(taskId: string): Promise<any> {
     try {
       const collection = await this.getCollection('tasks');
       const query = {
-        id: taskId
-      }
+        id: taskId,
+      };
       const result = await collection.deleteMany(query);
       return result;
     } catch (e) {

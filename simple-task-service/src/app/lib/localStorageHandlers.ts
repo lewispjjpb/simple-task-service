@@ -1,9 +1,9 @@
-export const saveToLocalStorage = (key: string, value: any):void => {
+export const saveToLocalStorage = (key: string, value: any): void => {
   //set localStorage value at key
   localStorage.setItem(key, JSON.stringify(value));
-}
+};
 
-export const loadFromLocalStorage = (key:string):any => {
+export const loadFromLocalStorage = (key: string): any => {
   try {
     const storageValue = localStorage.getItem(key);
     return JSON.parse(storageValue || '');
@@ -11,4 +11,4 @@ export const loadFromLocalStorage = (key:string):any => {
     console.error(e);
     return null;
   }
-}
+};

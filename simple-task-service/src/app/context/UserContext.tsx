@@ -7,7 +7,9 @@ export interface IUserIdentifier {
 // context/UserContext.tsx
 import { createContext, useEffect, useState, ReactNode } from 'react';
 
-export const UserContext = createContext<IUserIdentifier>({} as IUserIdentifier);
+export const UserContext = createContext<IUserIdentifier>(
+  {} as IUserIdentifier
+);
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [userId, setUserId] = useState<string>('');
@@ -27,8 +29,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userId }}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={{ userId }}>{children}</UserContext.Provider>
   );
 };

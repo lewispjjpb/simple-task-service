@@ -7,10 +7,11 @@ import {
   MenuItem,
   InputLabel,
   Stack,
-  Button, SelectChangeEvent
+  Button,
+  SelectChangeEvent,
 } from '@mui/material';
-import { TasksContext } from "@/app/context/TasksContext";
-import { BasicModal } from "@/app/components/shared/BasicModal";
+import { TasksContext } from '@/app/context/TasksContext';
+import { BasicModal } from '@/app/components/shared/BasicModal';
 
 interface TaskModalProps {
   open: boolean;
@@ -18,7 +19,8 @@ interface TaskModalProps {
 }
 
 export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
-  const { editingTask, editTaskProperty, saveTask, updateAlertSettings } = useContext(TasksContext);
+  const { editingTask, editTaskProperty, saveTask, updateAlertSettings } =
+    useContext(TasksContext);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -34,7 +36,7 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
   const nameError = editingTask.name.length === 0;
 
   const content = (
-    <Box >
+    <Box>
       <Stack spacing={3}>
         <TextField
           fullWidth
@@ -80,10 +82,7 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
         </FormControl>
 
         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-          <Button
-            variant="outlined"
-            onClick={setClose}
-          >
+          <Button variant="outlined" onClick={setClose}>
             Cancel
           </Button>
           <Button
@@ -94,7 +93,7 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
                   open: true,
                   message: 'Task name is required',
                   severity: 'error',
-                })
+                });
                 return;
               }
               saveTask(editingTask.id);
@@ -108,5 +107,5 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
     </Box>
   );
 
-  return <BasicModal open={open} setClose={setClose} content={content}/>;
+  return <BasicModal open={open} setClose={setClose} content={content} />;
 };

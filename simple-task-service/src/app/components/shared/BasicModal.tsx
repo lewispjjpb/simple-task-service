@@ -1,5 +1,5 @@
 import { JSX } from 'react';
-import {Box, Button, Modal } from '@mui/material';
+import { Box, Button, Modal } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 interface BasicModalProps {
@@ -20,7 +20,7 @@ const style = {
   p: 4,
 };
 
-export const BasicModal = ({open, setClose, content}:BasicModalProps) => {
+export const BasicModal = ({ open, setClose, content }: BasicModalProps) => {
   return (
     <Modal
       open={open}
@@ -29,14 +29,11 @@ export const BasicModal = ({open, setClose, content}:BasicModalProps) => {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Button
-          onClick={setClose}
-          startIcon={<CloseIcon />}
-        >
+        <Button onClick={setClose} startIcon={<CloseIcon />}>
           Close
         </Button>
         {content}
       </Box>
     </Modal>
   );
-}
+};
