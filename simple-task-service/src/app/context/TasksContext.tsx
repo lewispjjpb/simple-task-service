@@ -4,8 +4,9 @@ import { ITaskContext, AlertSettings} from "@/types/taskContextDefinition";
 import {ITaskList, ITask} from "@/types/tasks";
 import {loadFromLocalStorage, saveToLocalStorage} from "@/app/lib/localStorageHandlers";
 import {BasicAlert} from "@/app/components/shared/BasicAlert";
-import { StorageHandler} from "@/app/lib/RequestHandlerClass";
+import {RequestHandler} from "@/app/lib/RequestHandlerClass";
 import {UserContext} from "@/app/context/UserContext";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const TasksContext = createContext<ITaskContext>({} as ITaskContext);
 
@@ -29,8 +30,7 @@ export const TasksContextProvider = ({children}: {children:JSX.Element}) => {
   const [tasks, setTasks] = useState<ITaskList>([]);
   const [editingTask, setEditingTask] = useState<ITask>(initialEditingTask);
   const [alertSettings, setAlertSettings] = useState<AlertSettings>(initialAlertSettings);
-
-console.debug({userId})
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
     if (userId) {
@@ -38,12 +38,13 @@ console.debug({userId})
     }
   },[userId])
 
-  const loadTasksFromStorage = async ():void => {
+  const loadTasksFromStorage = async ():Promise<void> => {
     try {
+      setPageLoading(true);
     // const taskList:ITaskList = await loadFromLocalStorage('tasks');
-      const request = new StorageHandler(`${userId}/load-tasks`);
-      const taskList:ITaskList = await request.getTasks<string>();
-      console.debug({userId, taskList})
+      const request = new RequestHandler(`${userId}/load-tasks`);
+      const taskList:ITaskList = await request.getTasks<ITaskList>();
+
     setTasks(taskList || []);
       updateAlertSettings({
         open: true,
@@ -57,6 +58,8 @@ console.debug({userId})
         severity: 'error',
       })
       console.error(e);
+    } finally {
+      setPageLoading(false);
     }
   }
 
@@ -71,36 +74,44 @@ console.debug({userId})
     setEditingTask(task);
   }
 
-  const saveTask = (taskId: ITask['id']) => {
+  const saveTask = async (taskId: ITask['id']) => {
     try {
 
-    const task = tasks?.find(task => task.id === taskId);
-    if (task) {
-      //replace existing task with updated task
-      const updatedTasks = tasks.map(task => task.id === taskId ? editingTask : task)
-      setTasks(updatedTasks);
-      saveToLocalStorage('tasks', updatedTasks)
-      setEditingTask(initialEditingTask);
-      updateAlertSettings({
-        open: true,
-        message: 'Task updated successfully',
-        severity: 'success',
-      })
-    } else {
+    // const task = tasks?.find(task => task.id === taskId);
+    // if (task) {
+    //   //replace existing task with updated task
+    //   // const updatedTasks = tasks.map(task => task.id === taskId ? editingTask : task)
+    //   // saveToLocalStorage('tasks', updatedTasks)
+    //   setEditingTask(initialEditingTask);
+    //   const request = new RequestHandler(`${userId}/save-tasks`);
+    //   const success = await request.saveTasks(task);
+    //   if (!success) {
+    //     throw new Error('could not save tasks');
+    //   }
+    //   updateAlertSettings({
+    //     open: true,
+    //     message: 'Task updated successfully',
+    //     severity: 'success',
+    //   })
+    // } else {
       // add new task
       if (!editingTask.bucket) {
         editingTask.bucket = 'uncategorized';
       }
-      const updatedTasks = [...tasks, editingTask];
-      setTasks(updatedTasks);
-      saveToLocalStorage('tasks', updatedTasks);
+      // const updatedTasks = [...tasks, editingTask];
+      // saveToLocalStorage('tasks', updatedTasks);
       setEditingTask(initialEditingTask);
+      const request = new RequestHandler(`${userId}/save-tasks`);
+      const success = await request.saveTasks(editingTask);
+      if (!success) {
+        throw new Error('could not save tasks');
+      }
       updateAlertSettings({
         open: true,
         message: 'Task added successfully',
         severity: 'success',
       })
-    }
+
     } catch (e) {
       updateAlertSettings({
         open: true,
@@ -108,16 +119,21 @@ console.debug({userId})
         severity: 'error',
       })
       console.error(e);
+    } finally {
+      loadTasksFromStorage();
     }
   }
 
-  const deleteTask = (taskId: ITask['id']) => {
+  const deleteTask = async (taskId: ITask['id']) => {
     try {
     if (tasks.find(task => task.id === taskId)) {
-      //remove task from tasks
-      const updatedTasks = tasks.filter(task => task.id !== taskId);
-      setTasks(updatedTasks);
-      saveToLocalStorage('tasks', updatedTasks);
+
+      // saveToLocalStorage('tasks', updatedTasks);
+      const request = new RequestHandler(`${userId}/delete-task`);
+      const response = await request.deleteTask(taskId);
+      if (response.status !== 204) {
+        throw new Error('could not delete task');
+      }
       setAlertSettings({
         open: true,
         message: 'Task deleted successfully',
@@ -131,8 +147,10 @@ console.debug({userId})
         severity: 'error',
       })
       console.error(e);
+      } finally {
+        loadTasksFromStorage();
       }
-    //check id exists in tasks
+
   }
 
   const closeAlert = () => {
@@ -151,9 +169,10 @@ console.debug({userId})
     saveTask,
     deleteTask,
     updateAlertSettings,
+    alertSettings,
   }
   return <TasksContext.Provider value={contextValues}>
     <BasicAlert open={alertSettings.open} message={alertSettings.message} severity={alertSettings.severity} handleClose={closeAlert}/>
-    {children}
+    {pageLoading ? <CircularProgress /> : children}
   </TasksContext.Provider>
 }

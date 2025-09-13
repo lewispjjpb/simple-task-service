@@ -7,6 +7,7 @@ export interface ITask {
    * @bucket determines which list task is assigned to
    */
   bucket: string;
+  _id?: string; //only relevant to mongo
 }
 
 export type ITaskList = ITask[]

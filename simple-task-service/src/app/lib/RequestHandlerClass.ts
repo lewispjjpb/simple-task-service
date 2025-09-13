@@ -1,4 +1,5 @@
-//this would be an .env value
+
+import {ITask, ITaskList} from "@/types/tasks";
 
 export class RequestHandler {
   private headers;
@@ -9,7 +10,7 @@ export class RequestHandler {
       'Accept': 'application/json',
       'Content-Encoding': 'gzip',
     };
-    this.route = `$/tasks${route}`;
+    this.route = `/tasks/api/tasks/${route}`;
   }
 
   async getTasks<T,>():Promise<T> {
@@ -26,15 +27,30 @@ export class RequestHandler {
     }
   }
 
-  async saveTasks(tasks):JSON {
+  async saveTasks(task:ITask):Promise<Response> {
     try {
       const response = await fetch(this.route, {
         method: 'POST',
         headers: {...this.headers},
-        body: JSON.stringify(tasks)
+        body: JSON.stringify(task)
       });
       const savedTasks = await response.json();
       return savedTasks;
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
+  }
+
+  async deleteTask(taskId:string):Promise<Response> {
+    try {
+      const response = await fetch(`${this.route}`, {
+        method: 'DELETE',
+        headers: {...this.headers},
+        body: JSON.stringify(taskId)
+      });
+      const deletedTask = await response.json();
+      return deletedTask;
     } catch (e) {
       console.error(e);
       throw e;

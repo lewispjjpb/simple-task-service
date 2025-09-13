@@ -14,7 +14,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Check if user already has an ID
     const existingUserId = localStorage.getItem('userId');
-console.debug({existingUserId});
+
     if (existingUserId) {
       setUserId(existingUserId);
     } else {
