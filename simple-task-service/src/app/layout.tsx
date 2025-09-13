@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import darkTheme from "@/theme";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,6 +20,7 @@ export const metadata: Metadata = {
   description: "Simple task management service",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,7 +29,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
         {children}
+      </ThemeProvider>
       </body>
     </html>
   );

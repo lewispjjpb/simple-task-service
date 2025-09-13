@@ -53,13 +53,17 @@ export const TaskTracker = ():JSX.Element => {
     });
   }
 
+  const addTaskButtonText = tasks.length === 0 ? 'Add First Task' : 'Add Another Task';
+
   return <>
-    <Button variant='contained' onClick={addTask}>Add Task</Button>
     <EditTaskModal setClose={() => setNewTaskModalOpen(false)} open={newTaskModalOpen}/>
-    <Grid container spacing={2}>
-      <Grid size={12}>
-        <Typography variant="h4" component="div"></Typography>
+    <Grid container spacing={1} maxWidth={1200}  justifySelf="center" minWidth={600} margin={2}>
+      <Grid size={9.5} alignSelf={'center'}>
+        <Typography variant="h4" component="div">Track Your Tasks Below</Typography>
       </Grid>
+    <Grid size={2.5}  alignSelf={'center'}>
+      <Button  size="small" aria-label={'Add a task'} variant='contained' onClick={addTask} fullWidth={true}>{addTaskButtonText}</Button>
+    </Grid>
     {Object.entries(listGroups).map(([bucket, tasks]) =>
       <Grid
         key={bucket}

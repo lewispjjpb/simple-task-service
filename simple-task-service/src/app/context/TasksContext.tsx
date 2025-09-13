@@ -1,9 +1,11 @@
 "use client";
-import {createContext, JSX, useEffect, useState} from 'react';
+import {createContext, JSX, useContext, useEffect, useState} from 'react';
 import { ITaskContext, AlertSettings} from "@/types/taskContextDefinition";
 import {ITaskList, ITask} from "@/types/tasks";
 import {loadFromLocalStorage, saveToLocalStorage} from "@/app/lib/localStorageHandlers";
 import {BasicAlert} from "@/app/components/shared/BasicAlert";
+import { StorageHandler} from "@/app/lib/RequestHandlerClass";
+import {UserContext} from "@/app/context/UserContext";
 
 export const TasksContext = createContext<ITaskContext>({} as ITaskContext);
 
@@ -23,19 +25,25 @@ const initialAlertSettings:AlertSettings = {
 }
 
 export const TasksContextProvider = ({children}: {children:JSX.Element}) => {
+  const {userId} = useContext(UserContext)
   const [tasks, setTasks] = useState<ITaskList>([]);
   const [editingTask, setEditingTask] = useState<ITask>(initialEditingTask);
   const [alertSettings, setAlertSettings] = useState<AlertSettings>(initialAlertSettings);
 
-
+console.debug({userId})
 
   useEffect(() => {
-    loadTasksFromStorage()
-  },[])
+    if (userId) {
+      loadTasksFromStorage()
+    }
+  },[userId])
 
-  const loadTasksFromStorage = async ():Promise<void> => {
+  const loadTasksFromStorage = async ():void => {
     try {
-    const taskList:ITaskList = await loadFromLocalStorage('tasks');
+    // const taskList:ITaskList = await loadFromLocalStorage('tasks');
+      const request = new StorageHandler(`${userId}/load-tasks`);
+      const taskList:ITaskList = await request.getTasks<string>();
+      console.debug({userId, taskList})
     setTasks(taskList || []);
       updateAlertSettings({
         open: true,
