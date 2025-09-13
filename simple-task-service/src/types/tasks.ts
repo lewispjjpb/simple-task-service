@@ -11,4 +11,4 @@ export interface ITask {
 
 export type ITaskList = ITask[]
 
-export type CompletionStatus = "not started" | "incomplete" | "complete";
+export type CompletionStatus = "incomplete" | "complete";
