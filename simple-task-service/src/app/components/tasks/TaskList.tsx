@@ -1,7 +1,6 @@
 import { JSX } from 'react';
 import { ITaskList } from '@/types/tasks';
 import { Task } from '@/app/components/tasks/Task';
-``;
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';

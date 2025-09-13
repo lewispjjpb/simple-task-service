@@ -1,10 +1,8 @@
 'use client';
-// types/user.ts
 export interface IUserIdentifier {
   userId: string;
 }
 
-// context/UserContext.tsx
 import { createContext, useEffect, useState, ReactNode } from 'react';
 
 export const UserContext = createContext<IUserIdentifier>(
