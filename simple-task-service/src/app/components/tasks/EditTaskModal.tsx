@@ -96,7 +96,7 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
                 });
                 return;
               }
-              saveTask(editingTask.id);
+              saveTask();
               setClose();
             }}
           >

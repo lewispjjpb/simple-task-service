@@ -4,7 +4,7 @@ import { ITask } from '@/types/tasks';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { 'user-id': string } }
+  { params }: { params: Promise<{ 'user-id': string }> }
 ) {
   try {
     const body = await request.json();

@@ -1,11 +1,11 @@
-import { Alert, Snackbar } from '@mui/material';
+import {Alert, Snackbar, SnackbarCloseReason} from '@mui/material';
 import { JSX, SyntheticEvent } from 'react';
 
 type BasicAlertPropsType = {
   open: boolean;
   message: string;
   severity: 'success' | 'info' | 'warning' | 'error';
-  handleClose: (event?: SyntheticEvent, reason?: string) => void;
+  handleClose: (event: Event | SyntheticEvent<any, Event>, reason: SnackbarCloseReason) => void;
 };
 
 export const BasicAlert = ({

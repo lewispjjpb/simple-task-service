@@ -3,7 +3,7 @@ import { MongoQueryClass } from '@/app/lib/MongoQueryClass';
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { 'user-id': string } }
+  { params } : { params: Promise<{ 'user-id': string }> }
 ) {
   try {
     const body = await request.json();

@@ -81,30 +81,11 @@ export const TasksContextProvider = ({
     setEditingTask(task);
   };
 
-  const saveTask = async (taskId: ITask['id']) => {
+  const saveTask = async () => {
     try {
-      // const task = tasks?.find(task => task.id === taskId);
-      // if (task) {
-      //   //replace existing task with updated task
-      //   // const updatedTasks = tasks.map(task => task.id === taskId ? editingTask : task)
-      //   // saveToLocalStorage('tasks', updatedTasks)
-      //   setEditingTask(initialEditingTask);
-      //   const request = new RequestHandler(`${userId}/save-tasks`);
-      //   const success = await request.saveTasks(task);
-      //   if (!success) {
-      //     throw new Error('could not save tasks');
-      //   }
-      //   updateAlertSettings({
-      //     open: true,
-      //     message: 'Task updated successfully',
-      //     severity: 'success',
-      //   })
-      // } else {
-      // add new task
       if (!editingTask.bucket) {
         editingTask.bucket = 'uncategorized';
       }
-      // const updatedTasks = [...tasks, editingTask];
       // saveToLocalStorage('tasks', updatedTasks);
       setEditingTask(initialEditingTask);
       const request = new RequestHandler(`${userId}/save-tasks`);

@@ -1,23 +1,39 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Prerequisites
+- Node.js installed
+- npm installed
+- Docker installed 
+- Docker Compose installed
+- An .env file in the app root directory to match the .env.template file
 
-First, run the development server:
+# Task Tracker Application
+- Create a task list
+- Add tasks to the list
+- Mark tasks as complete or incomplete
+- Switch between task lists
+- Save task list progress
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open (http://localhost:3000/tasks) with your browser to see the result.
+## Running with Docker Compose
+
+The easiest way to run the application is using Docker Compose:
+
+bash
+### Build and start the application
+docker-compose up --build
+### To run in detached mode
+docker-compose up -d --build
+### To stop the application
+docker-compose down
+### To stop the application and remove volumes
+docker-compose down -v
+
+The application will be available at http://localhost:3000/tasks
+
+
 
 ## Requirements:
-Task Tracker Application
 Objective
 Design and implement a simple Task Tracker web application that allows users to create,
 manage, and organize their tasks. The user should be able to manage multiple task lists (like

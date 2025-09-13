@@ -5,7 +5,7 @@ export interface ITaskContext {
   setTaskToEdit: (task: ITask) => void;
   editTaskProperty: (key: string, value: string) => void;
   editingTask: ITask;
-  saveTask: (taskId: ITask['id']) => void;
+  saveTask: () => void;
   deleteTask: (taskId: ITask['id']) => void;
   alertSettings: AlertSettings;
   updateAlertSettings: (alertSettings: AlertSettings) => void;
