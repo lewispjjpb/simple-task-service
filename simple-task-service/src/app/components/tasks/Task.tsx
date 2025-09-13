@@ -1,5 +1,5 @@
 import {JSX, useContext, useState} from 'react';
-import {Card, CardContent, Chip, Typography, Button, Tooltip, IconButton} from "@mui/material";
+import {Card, CardContent, Chip, Typography, Tooltip, IconButton} from "@mui/material";
 import {EditTaskModal} from "@/app/components/tasks/EditTaskModal";
 import { ITask } from "@/types/tasks";
 import {TasksContext} from "@/app/context/TasksContext";

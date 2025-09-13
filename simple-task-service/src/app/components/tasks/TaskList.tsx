@@ -1,6 +1,5 @@
-import {JSX, useEffect, useContext, useState} from 'react';
-import { ITask, ITaskList} from "@/types/tasks";
-import {TasksContext} from "@/app/context/TasksContext";
+import { JSX } from 'react';
+import { ITaskList} from "@/types/tasks";
 import {Task} from "@/app/components/tasks/Task";``
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';

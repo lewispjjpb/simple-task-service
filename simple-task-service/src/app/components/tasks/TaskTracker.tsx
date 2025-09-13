@@ -3,7 +3,7 @@ import {JSX, useContext, useEffect, useState} from 'react';
 import  { TaskList} from "@/app/components/tasks/TaskList";
 import {ITaskList} from "@/types/tasks";
 import {TasksContext} from "@/app/context/TasksContext";
-import {Button, Grid, Typography, Box} from "@mui/material";
+import {Button, Grid, Typography} from "@mui/material";
 import { EditTaskModal} from "@/app/components/tasks/EditTaskModal";
 
 

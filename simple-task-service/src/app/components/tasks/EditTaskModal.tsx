@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, ChangeEvent } from 'react';
 import {
   Box,
   TextField,
@@ -17,22 +17,10 @@ interface TaskModalProps {
   setClose: () => void;
 }
 
-const modalStyle = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-  borderRadius: 2,
-};
-
 export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
-  const { editingTask, editTaskProperty, saveTask } = useContext(TasksContext);
+  const { editingTask, editTaskProperty, saveTask, updateAlertSettings } = useContext(TasksContext);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     editTaskProperty(name, value);
   };
@@ -42,6 +30,8 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
     const value = event.target.value as string;
     editTaskProperty(name, value);
   };
+
+  const nameError = editingTask.name.length === 0;
 
   const content = (
     <Box >
@@ -53,6 +43,8 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
           value={editingTask.name}
           onChange={handleInputChange}
           required
+          error={nameError}
+          helperText={nameError ? 'Task name is required' : ''}
         />
 
         <TextField
@@ -71,7 +63,6 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
           label="Bucket"
           value={editingTask.bucket}
           onChange={handleInputChange}
-          required
         />
 
         <FormControl fullWidth>
@@ -98,6 +89,14 @@ export const EditTaskModal = ({ open, setClose }: TaskModalProps) => {
           <Button
             variant="contained"
             onClick={() => {
+              if (!editingTask.name) {
+                updateAlertSettings({
+                  open: true,
+                  message: 'Task name is required',
+                  severity: 'error',
+                })
+                return;
+              }
               saveTask(editingTask.id);
               setClose();
             }}

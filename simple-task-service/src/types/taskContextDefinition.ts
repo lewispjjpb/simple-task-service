@@ -7,4 +7,12 @@ export interface ITaskContext {
   editingTask: ITask,
   saveTask: (taskId: ITask['id']) => void,
   deleteTask: (taskId: ITask['id']) => void,
+  alertSettings: AlertSettings,
+  updateAlertSettings: (alertSettings: AlertSettings) => void,
+}
+
+export interface AlertSettings {
+  open: boolean,
+  message: string,
+  severity: 'success' | 'error' | 'warning' | 'info',
 }

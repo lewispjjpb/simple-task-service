@@ -1,6 +1,6 @@
 export const saveToLocalStorage = (key: string, value: any):void => {
   //set localStorage value at key
-  const saved = localStorage.setItem(key, JSON.stringify(value));
+  localStorage.setItem(key, JSON.stringify(value));
 }
 
 export const loadFromLocalStorage = (key:string):any => {
