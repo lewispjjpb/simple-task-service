@@ -8,7 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export const  Task = (task: ITask):JSX.Element => {
-  const {setTaskToEdit} = useContext(TasksContext);
+  const {setTaskToEdit, deleteTask} = useContext(TasksContext);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   const openAndPopulateEditModal = () => {
@@ -65,7 +65,7 @@ export const  Task = (task: ITask):JSX.Element => {
                     aria-label="delete task"
                     color="primary"
                     size="small"
-                    onClick={openAndPopulateEditModal}
+                    onClick={() => deleteTask(task.id)}
                   >
                     <DeleteForeverIcon />
                   </IconButton>
