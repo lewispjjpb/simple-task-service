@@ -9,8 +9,6 @@ export interface ITask {
   bucket: string;
 }
 
-export interface TaskList {
-  [id: string]: ITask
-}
+export type ITaskList = ITask[]
 
 export type CompletionStatus = "not started" | "incomplete" | "complete";
